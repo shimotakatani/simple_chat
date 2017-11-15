@@ -30,8 +30,10 @@ public class Chat {
         userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(session -> {
             try {
                 session.getRemote().sendString(String.valueOf(new JSONObject()
-                        .put("userMessage", createHtmlMessageFromSender(sender, message))
+                        .put("userMessage", message)
+                        .put("sender", sender)
                         .put("userlist", userUsernameMap.values())
+                        .put("timestamp", new SimpleDateFormat("HH:mm:ss").format(new Date()))
                 ));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -40,6 +42,15 @@ public class Chat {
     }
 
     //Builds a HTML element with a sender-name, a message, and a timestamp,
+
+    /**
+     * Собрать ответ в виде HTML-элемента
+     * Теперь отправляем данные, отрисовка происходит на фронте
+     * @param sender
+     * @param message
+     * @return
+     */
+    @Deprecated
     private static String createHtmlMessageFromSender(String sender, String message) {
         return article().with(
                 b(sender + " says:"),
