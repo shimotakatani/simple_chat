@@ -4,11 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WebsSockets</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
 <div id="chatControls">
-    <input v-model="message" placeholder="Type your message">
+    <input v-model="message" placeholder="Type your message" @keydown.enter="sendMessage">
     <button v-on:click="sendMessage">Send</button>
 </div>
 <div id="userlist">
