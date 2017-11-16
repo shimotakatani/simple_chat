@@ -9,8 +9,10 @@
   import ChatControls from './ChatControls.vue'
   import ChatMessage from './ChatMessage.vue'
   import UserList from './UserList.vue'
-  import VueWebsocket from "../../node_modules/vue-websocket";
+  import VueWebsocket from '../../node_modules/vue-websocket';
+  import Vue from 'vue'
 
+  Vue.use(VueWebsocket, 'ws://localhost:4567/chat/')
   let globalData = {
     messages:[]
   }
@@ -27,22 +29,14 @@
         //webSocket: null,
         users: ['User'],
         messages: [
-            {
-              message: 'How are you?',
-              userName: 'Someone',
-              time: '14:00:00'
-            }
-            ]
+          {
+            message: 'How are you?',
+            userName: 'Someone',
+            time: '14:00:00'
+          }
+        ]
 
       }
-    },
-    mounted: function () {
-      this.webSocket = new WebSocket('ws://localhost:4567/chat/')
-      this.webSocket.onmessage = function (msg) {
-        debugger
-        document.getElementById('chat').$emit('receiveMessage', msg)
-      }
-      this.webSocket.onclose = function () { alert('WebSocket connection closed') }
     },
     methods: {
       sendMessage: function () {
@@ -50,12 +44,43 @@
       },
       receiveMessage: function (msg) {
         let data = JSON.parse(msg.data)
-        globalData.messages.unshift({
+        this.messages.unshift({
           userName: data.sender,
           message: data.userMessage,
           time: data.timestamp
         })
-        globalData.users = data.userlist
+        this.users = data.userlist
+      }
+    },
+    socket: {
+      // Prefix for event names
+      // prefix: "/counter/",
+
+      // If you set `namespace`, it will create a new socket connection to the namespace instead of `/`
+      // namespace: "/counter",
+
+      events: {
+
+        // Similar as this.$socket.on("changed", (msg) => { ... });
+        // If you set `prefix` to `/counter/`, the event name will be `/counter/changed`
+        //
+        changed(msg) {
+          this.receiveMessage(msg);
+        },
+
+        connect() {
+          console.error("WebSocket connect")
+        },
+
+        disconnect() {
+          console.error("WebSocket connection closed")
+        },
+
+        error(err) {
+          console.error("Websocket error!", err);
+        }
+
+
       }
     }
   }
