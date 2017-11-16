@@ -9,6 +9,7 @@
   import ChatControls from './ChatControls.vue'
   import ChatMessage from './ChatMessage.vue'
   import UserList from './UserList.vue'
+  import VueWebsocket from "../../node_modules/vue-websocket";
 
   let globalData = {
     messages:[]
