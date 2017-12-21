@@ -9,14 +9,33 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    messages: [],
+    todos: [
+      { id: 1, text: 'Первая задача', done: true },
+      { id: 2, text: 'Сделать чатик', done: false }
+    ]
   },
   mutations: {
     increment (state) {
       state.count++
     },
-    decrement (state){
-      state.count--;
+    decrement (state) {
+      state.count--
+    },
+    addMessage (state, payload){
+      state.todos.push(payload);
+    }
+  },
+  getters: {
+    doneTodos: state => {
+      return state.todos.filter(todo => todo.done)
+    },
+    getTodoById: (state) => (id) => {
+      return state.todos.find(todo => todo.id === id)
+    },
+    doneTodosCount: (state, getters) => {
+      return getters.doneTodos.length
     }
   }
 })
@@ -29,5 +48,11 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  computed: {
+    count () {
+      return store.state.count
+    }
+  }
 })
+

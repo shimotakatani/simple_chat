@@ -19,6 +19,7 @@
           this.$emit('sendMessage')
           this.message = ''
         }
+        this.$store.commit('increment')
       }
     }
 

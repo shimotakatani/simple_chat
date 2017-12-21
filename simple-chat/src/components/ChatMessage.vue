@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    //name: 'chatMessage',
+    // name: 'chatMessage',
     props: ['messages']
   }
 </script>
