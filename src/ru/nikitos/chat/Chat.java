@@ -22,7 +22,7 @@ public class Chat {
     public static void main(String[] args) {
         staticFileLocation("/public"); //index.html is served at localhost:4567 (default port)
         webSocket("/chat", ChatWebSocketHandler.class);
-        port(8081);
+        port(4567);
         init();
     }
 
@@ -31,8 +31,9 @@ public class Chat {
         userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(session -> {
             try {
                 session.getRemote().sendString(String.valueOf(new JSONObject()
-                        .put("userMessage", message)
-                        .put("sender", sender)
+                        .put("text", message)
+                        .put("id", sender)
+                        .put("done", true)
                         .put("userlist", userUsernameMap.values())
                         .put("timestamp", new SimpleDateFormat("HH:mm:ss").format(new Date()))
                 ));
