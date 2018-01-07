@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
@@ -31,7 +30,7 @@ const store = new Vuex.Store({
     sendMessage ({commit}, message){
       //send to server
       commit('increment')
-      commit('addMessage', message)
+      //commit('addMessage', message)
       socket.send(message)
     },
     increment ({ commit }){
@@ -56,7 +55,6 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   store,
   template: '<App/>',
   components: { App },
@@ -100,7 +98,7 @@ socket.onclose = function(event) {
 };
 
 socket.onmessage = function(event) {
-  store.commit('addMessage',  event.data );
+  store.commit('addMessage',  JSON.parse(event.data) );
 };
 
 socket.onerror = function(error) {

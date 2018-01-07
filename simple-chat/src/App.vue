@@ -45,7 +45,7 @@ export default {
     },
     addMessage () {
       if (this.message !== '') {
-        this.$store.dispatch('sendMessage', {id:3, text: this.message, done: true})
+        this.$store.dispatch('sendMessage', this.message)
         this.message = ''
       }
 
